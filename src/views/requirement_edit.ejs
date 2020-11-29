@@ -6,15 +6,17 @@
       <div class="card-body">
         <form action="/requirement/update/<%= data.CLIENT_ID %>" method="POST">
           <div class="form-group">
-            <input type="text" name="CLIENT_NAME" value="<%= data.CLIENT_NAME%>" placeholder="Name" class="form-control" autofocus>
+            <input type="text" name="CLIENT_ID" value="<%=data.CLIENT_ID %>" placeholder="Enter Client ID" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" name="CITY" value="<%= data.CITY%>" placeholder="Address" class="form-control">
+            <input type="text" name="MATERIAL_ID" value="<%=data.MATERIAL_ID %>" placeholder="Enter Material ID" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" name="COMPANY" value="<%= data.COMPANY%>" placeholder="Phone" class="form-control">
+            <input type="text" name="QUANTITY" value="<%=data.QUANTITY %>" placeholder="Enter Quantity" class="form-control">
           </div>
-
+          <div class="form-group">
+            <input type="text" name="AMOUNT" value="<%=data.AMOUNT %>" placeholder="Enter Bill Amount" class="form-control">
+          </div>
           <button type="submit" class="btn btn-primary">
             save CLIENT
           </button>

@@ -6,16 +6,16 @@
       <div class="card-body">
         <form action="/material/update/<%= data.CLIENT_ID %>" method="POST">
             <div class="form-group">
-                <input type="text" name="MATERIAL_NAME" placeholder="Enter Material Name" class="form-control">
+                <input type="text" name="MATERIAL_NAME" value="<%=data.MATERIAL_NAME %>" placeholder="Enter Material Name" class="form-control">
               </div>
               <div class="form-group">
-                <input type="text" name="MATERIAL_TYPE" placeholder="Enter Material Type" class="form-control">
+                <input type="text" name="MATERIAL_TYPE" value="<%=data.MATERIAL_TYPE %>" placeholder="Enter Material Type" class="form-control">
               </div>
               <div class="form-group">
-                <input type="text" name="MATERIAL_GRADE" placeholder="Enter Material Grade" class="form-control">
+                <input type="text" name="MATERIAL_GRADE" value="<%=data.MATERIAL_GRADE %>" placeholder="Enter Material Grade" class="form-control">
               </div>
               <div class="form-group">
-                <input type="text" name="COST" placeholder="Enter Material Cost" class="form-control">
+                <input type="text" name="COST" value="<%=data.COST %>" placeholder="Enter Material Cost" class="form-control">
               </div>
     
               <button type="submit" class="btn btn-primary">
