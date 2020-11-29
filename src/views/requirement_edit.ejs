@@ -1,0 +1,27 @@
+<% include partials/_header %>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-5 offset-md-3 card">
+      <div class="card-body">
+        <form action="/requirement/update/<%= data.CLIENT_ID %>" method="POST">
+          <div class="form-group">
+            <input type="text" name="CLIENT_NAME" value="<%= data.CLIENT_NAME%>" placeholder="Name" class="form-control" autofocus>
+          </div>
+          <div class="form-group">
+            <input type="text" name="CITY" value="<%= data.CITY%>" placeholder="Address" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="COMPANY" value="<%= data.COMPANY%>" placeholder="Phone" class="form-control">
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            save CLIENT
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include partials/_footer %>
