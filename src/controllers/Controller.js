@@ -121,7 +121,7 @@ controller.materialdelete = (req, res) => {
 
 controller.contactlist = (req, res) => {
   req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM CONTACT', (err, contacts) => {
+    conn.query('SELECT * FROM CONTACT_DETAILS', (err, contacts) => {
      if (err) {
       res.json(err);
      }
@@ -136,7 +136,7 @@ controller.contactsave = (req, res) => {
   const data = req.body;
   console.log(req.body)
   req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO CONTACT SET ?', data, (err, contact) => {
+    const query = connection.query('INSERT INTO CONTACT_DETAILS SET ?', data, (err, contact) => {
       console.log(contact)
       res.redirect('/contact');
     })
@@ -146,7 +146,7 @@ controller.contactsave = (req, res) => {
 controller.contactedit = (req, res) => {
   const { id } = req.params;
   req.getConnection((err, conn) => {
-    conn.query("SELECT * FROM CONTACT WHERE CONTACT_ID = ?", [id], (err, rows) => {
+    conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?", [id], (err, rows) => {
       res.render('contact_edit', {
         data: rows[0]
       })
@@ -159,7 +159,7 @@ controller.contactupdate = (req, res) => {
   const newContact = req.body;
   req.getConnection((err, conn) => {
 
-  conn.query('UPDATE CONTACT SET ? WHERE CONTACT_ID = ?', [newContact, id], (err, rows) => {
+  conn.query('UPDATE CONTACT_DETAILS SET ? WHERE CLIENT_ID = ?', [newContact, id], (err, rows) => {
     res.redirect('/contact');
   });
   });
@@ -168,7 +168,7 @@ controller.contactupdate = (req, res) => {
 controller.contactdelete = (req, res) => {
   const { id } = req.params;
   req.getConnection((err, connection) => {
-    connection.query('DELETE FROM CONTACT WHERE CONTACT_ID = ?', [id], (err, rows) => {
+    connection.query('DELETE FROM CONTACT_DETAILS WHERE CLIENT_ID = ?', [id], (err, rows) => {
       res.redirect('/contact');
     });
   });
@@ -253,6 +253,7 @@ controller.requirementlist = (req, res) => {
     conn.query('SELECT * FROM REQUIREMENT', (err, requirements) => {
      if (err) {
       res.json(err);
+      console.log(err);
      }
      res.render('requirement', {
         data: requirements

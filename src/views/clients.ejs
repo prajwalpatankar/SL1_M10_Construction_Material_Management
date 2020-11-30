@@ -2,6 +2,28 @@
 
 <div class="container mt-5">
   <div class="row">
+    <div class="col-md-5">
+      <div class="card-body">
+
+        <form action="/client/add" method="POST">
+          <div class="form-group">
+            <input type="text" name="CLIENT_NAME" placeholder="Enter Client Name" class="form-control" autofocus>
+          </div>
+          <div class="form-group">
+            <input type="text" name="CITY" placeholder="Enter Client City" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="COMPANY" placeholder="Enter Client Company" class="form-control">
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            save
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-7">
       <table class="table table-bordered table-hover">
         <thead>
@@ -41,26 +63,6 @@
           <% } %>
         </tbody>
       </table>
-    </div>
-    <div class="col-md-5">
-      <div class="card-body">
-
-        <form action="/client/add" method="POST">
-          <div class="form-group">
-            <input type="text" name="CLIENT_NAME" placeholder="Enter Client Name" class="form-control" autofocus>
-          </div>
-          <div class="form-group">
-            <input type="text" name="CITY" placeholder="Enter Client City" class="form-control">
-          </div>
-          <div class="form-group">
-            <input type="text" name="COMPANY" placeholder="Enter Client Company" class="form-control">
-          </div>
-
-          <button type="submit" class="btn btn-primary">
-            save
-          </button>
-        </form>
-      </div>
     </div>
   </div>
 </div>
