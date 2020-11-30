@@ -1,32 +1,32 @@
 <% include partials/_header %>
-
 <div class="container mt-5">
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-8">
       <div class="card-body">
-
+        <h1>Material Stock Details</h1><br />
         <form action="/stock/add" method="POST">
           <div class="form-group">
             <label>Add Material Stock </label>
             <select name="MATERIAL_ID">
               <% if (data_material) { %>
-                <% for(var i = 0; i < data_material.length; i++) { %>
+              <% for(var i = 0; i < data_material.length; i++) { %>
 
-                  <% var flag=0; %>
-                  <% if (data) { %>
-                    <% for(var j = 0; j < data.length; j++) { %>
-                      
-                      <% if(data[j].MATERIAL_ID == data_material[i].MATERIAL_ID) { %>
-                        <% flag=1; %>
-                      <% } %>
-                    <% } %>
-                  <% } %>
-                    
-                  <% if(flag!=1) { %>
-                    <option value=<%= data_material[i].MATERIAL_ID %> > <%= data_material[i].MATERIAL_NAME %> - <%= data_material[i].MATERIAL_TYPE %> - <%= data_material[i].MATERIAL_GRADE %></option>
-                  <% } %>
-                <% } %>
-              <% } %>    
+              <% var flag=0; %>
+              <% if (data) { %>
+              <% for(var j = 0; j < data.length; j++) { %>
+
+              <% if(data[j].MATERIAL_ID == data_material[i].MATERIAL_ID) { %>
+              <% flag=1; %>
+              <% } %>
+              <% } %>
+              <% } %>
+
+              <% if(flag!=1) { %>
+              <option value=<%= data_material[i].MATERIAL_ID %>> <%= data_material[i].MATERIAL_NAME %> -
+                <%= data_material[i].MATERIAL_TYPE %> - <%= data_material[i].MATERIAL_GRADE %></option>
+              <% } %>
+              <% } %>
+              <% } %>
             </select>
           </div>
           <div class="form-group">
@@ -85,5 +85,6 @@
     </div>
   </div>
 </div>
+
 
 <% include partials/_footer %>

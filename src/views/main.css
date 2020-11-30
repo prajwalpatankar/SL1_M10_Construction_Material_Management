@@ -1,0 +1,164 @@
+
+* {
+     margin:0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+
+ body {
+     height: 100vh;
+ }
+.logo {
+    cursor: pointer;
+}
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    padding: 10px 100px; 
+    transition: 1s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+   background-image: linear-gradient(to right, #434343 0%, black 100%);
+}
+
+
+
+nav  ul {
+    float: right;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
+    width: 47%;
+}
+ 
+
+nav ul li {
+    list-style: none;
+    padding: 9px 0;
+}
+nav ul li a {
+    color: #a3f3eb;
+    text-decoration: none;
+    font-size: 1.1vw;
+    font-family: "oswald";
+}
+.logo h1 {
+    color: #fff;
+    font-size: 1.5vw;
+}
+
+.logo h1 {
+    font-family: 'Sansita Swashed', cursive;
+
+}
+
+nav ul li::after,nav ul li::before {
+
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: #f3f3f3;
+    display: block;
+    margin: 3px 0;
+    transform: scaleX(0);
+    transition: transform 0.5s;
+
+}
+nav ul li::before{
+    top: 0;
+    transform-origin: right;
+}
+
+nav ul li::after {
+    bottom: 0;
+    transform-origin: left;
+}
+
+nav ul li:hover::before,
+nav ul li:hover::after {
+    transform: scaleX(1);
+}
+
+
+
+
+
+#first-section {
+    height: 90vh;
+    width: 100%;
+    background-image: linear-gradient(#cfd9df, #fff );
+    padding-top: 13vh;
+}
+.first-section {
+    width: 85%;
+    margin: 0 auto;
+    padding-top: 5%;
+}
+
+.home-image-pm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.home-image-pm .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center ;
+    margin-top: 6%;  
+}
+
+.home-image-pm .text >h1,.home-image-pm .text >p {
+    text-align: center;
+    width: 95%;
+    margin: 0 auto  ;
+}
+.home-image-pm .text >h1 {
+    font-size: 4em;
+     font-family: 'Josefin Sans', sans-serif;
+     color: #616161;
+
+}
+.home-image-pm .text >p {
+    font-size: 1.6em;
+    font-family: 'Josefin Sans', sans-serif;
+    color: #616161;
+
+}
+.text button {
+    width: 20%;
+    margin: 0 auto;
+    margin-top: 6%;
+    padding: 1%;
+    border-radius: 5px;
+    outline: none;
+    border: solid 1px #ccc;
+    cursor: pointer;
+    letter-spacing: 3px;
+    font-weight: 990;
+    font-size: 17px;
+    color: #777;
+    transition: 0.4s;
+    background-color: #bce6eb;
+}
+.text button a {
+    text-decoration: none;
+    color: #777;
+    width: 100%;
+    height: 100%;
+}
+.text button:hover {
+    background-color: #555;
+}
+
+.text button a:hover {
+    color: #fff;
+}

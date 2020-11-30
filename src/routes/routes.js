@@ -1,7 +1,14 @@
 const router = require('express').Router();
 
+const { Router } = require('express');
 const { clientlist } = require('../controllers/Controller');
 const Controller = require('../controllers/Controller');
+
+router.get('/',Controller.home);
+
+router.get('/login',Controller.login);
+router.get('/signup',Controller.signup);
+router.post('/signup/add',Controller.signupsave);
 
 router.get('/client', Controller.clientlist);
 router.post('/client/add',Controller.clientsave);

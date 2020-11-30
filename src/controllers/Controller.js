@@ -1,5 +1,49 @@
 const controller = {};
 
+controller.home = (req, res) => {
+  res.render('home')
+}
+
+controller.login = (req, res) => {
+  req.getConnection((err, conn) => {
+    conn.query('SELECT * FROM LOGIN_DETAILS', (err, users) => {
+     if (err) {
+      res.json(err);
+     }
+     res.render('login', {
+        data: users
+     });
+    });
+  });
+};
+
+// controller.loginsave = (req, res) => {
+//   req.getConnection((err, conn) => {
+//     conn.query('SELECT * FROM LOGIN_DETAILS WHERE USERNAME = ?', (err, users) => {
+//      if (err) {
+//       res.json(err);
+//      }
+//      res.redirect('/login');
+//     });
+//   });
+// };
+
+
+controller.signup = (req, res) => {
+  res.render('signup')
+}
+
+controller.signupsave = (req, res) => {
+  const data = req.body;
+  console.log(req.body)
+  req.getConnection((err, connection) => {
+    const query = connection.query('INSERT INTO LOGIN_DETAILS SET ?', data, (err, user) => {
+      console.log(user)
+      res.redirect('/login');
+    })
+  })
+};
+
 controller.clientlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM CLIENT', (err, clients) => {
