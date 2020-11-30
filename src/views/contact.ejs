@@ -7,7 +7,14 @@
 
         <form action="/contact/add" method="POST">
           <div class="form-group">
-            <input type="text" name="CLIENT_ID" placeholder="Enter Client ID" class="form-control" autofocus>
+            <label>Client Name  </label>
+            <select name="CLIENT_ID">
+              <% if (data_client) { %>
+                <% for(var i = 0; i < data_client.length; i++) { %>
+                  <option value=<%= data_client[i].CLIENT_ID %> > <%= data_client[i].CLIENT_NAME %> </option>
+                <% } %>
+              <% } %>  
+            </select>
           </div>
           <div class="form-group">
             <input type="text" name="PHONE_NO" placeholder="Enter Phone number" class="form-control">

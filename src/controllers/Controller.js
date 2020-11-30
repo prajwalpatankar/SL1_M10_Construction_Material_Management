@@ -122,12 +122,18 @@ controller.materialdelete = (req, res) => {
 controller.contactlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM CONTACT_DETAILS', (err, contacts) => {
-     if (err) {
+      if (err) {
       res.json(err);
-     }
-     res.render('contact', {
-        data: contacts
-     });
+      }
+      conn.query('SELECT * FROM CLIENT', (err, clients) => {
+        if (err) {
+        res.json(err);
+        }
+        res.render('contact', {
+          data: contacts,
+          data_client: clients
+        });
+      });
     });
   });
 };
@@ -186,13 +192,20 @@ controller.contactdelete = (req, res) => {
 
 controller.stocklist = (req, res) => {
   req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM STOCK', (err, clients) => {
+    conn.query('SELECT * FROM STOCK', (err, stocks) => {
      if (err) {
       res.json(err);
      }
-     res.render('stock', {
-        data: clients
-     });
+     conn.query('SELECT * FROM MATERIAL',(err, materials) => {
+      if (err) {
+        res.json(err);
+        console.log(err);
+       }
+        res.render('stock', {
+            data: stocks,
+            data_material: materials
+        });
+      });
     });
   });
 };
@@ -248,6 +261,20 @@ controller.stockdelete = (req, res) => {
 
 
 
+// controller.requirementlist = (req, res) => {
+//   req.getConnection((err, conn) => {
+//     conn.query('SELECT * FROM REQUIREMENT', (err, requirements) => {
+//      if (err) {
+//       res.json(err);
+//       console.log(err);
+//      }
+//      res.render('requirement', {
+//         data: requirements
+//      });
+//     });
+//   });
+// };
+
 controller.requirementlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM REQUIREMENT', (err, requirements) => {
@@ -255,45 +282,60 @@ controller.requirementlist = (req, res) => {
       res.json(err);
       console.log(err);
      }
-     res.render('requirement', {
-        data: requirements
+     conn.query('SELECT * FROM CLIENT',(err, clients) => {
+      if (err) {
+        res.json(err);
+        console.log(err);
+       }
+       conn.query('SELECT * FROM MATERIAL',(err, materials) => {
+        if (err) {
+          res.json(err);
+          console.log(err);
+         }
+         res.render('requirement', {
+          data: requirements,
+          data_client: clients,
+          data_material: materials 
+       });
+       });
      });
     });
   });
 };
 
+
 controller.requirementsave = (req, res) => {
   const data = req.body;
   console.log(req.body)
   req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO REQUIREMENT SET ?', data, (err, requirement) => {
+    const query = connection.query('INSERT INTO TEMP_REQ SET ?', data, (err, requirement) => {
       console.log(requirement)
       res.redirect('/requirement');
     })
   })
 };
 
-controller.requirementedit = (req, res) => {
-  const { id } = req.params;
-  req.getConnection((err, conn) => {
-    conn.query("SELECT * FROM REQUIREMENT WHERE ORDER_NO = ?", [id], (err, rows) => {
-      res.render('requirement_edit', {
-        data: rows[0]
-      })
-    });
-  });
-};
+// controller.requirementedit = (req, res) => {
+//   const { id } = req.params;
+//   req.getConnection((err, conn) => {
+//     conn.query("SELECT * FROM REQUIREMENT WHERE ORDER_NO = ?", [id], (err, rows) => {
+//       res.render('requirement_edit', {
+//         data: rows[0]
+//       })
+//     });
+//   });
+// };
 
-controller.requirementupdate = (req, res) => {
-  const { id } = req.params;
-  const newRequirement = req.body;
-  req.getConnection((err, conn) => {
+// controller.requirementupdate = (req, res) => {
+//   const { id } = req.params;
+//   const newRequirement = req.body;
+//   req.getConnection((err, conn) => {
 
-  conn.query('UPDATE REQUIREMENT SET ? WHERE ORDER_NO = ?', [newRequirement, id], (err, rows) => {
-    res.redirect('/requirement');
-  });
-  });
-};
+//   conn.query('UPDATE TEMP_REQ SET ? WHERE ORDER_NO = ?', [newRequirement, id], (err, rows) => {
+//     res.redirect('/requirement');
+//   });
+//   });
+// };
 
 controller.requirementdelete = (req, res) => {
   const { id } = req.params;
