@@ -1,31 +1,32 @@
 <% include partials/_header %>
-
-<div class="container mt-5">
+<div class="container">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="card-body">
-        <h1>Client Details</h1><br />
-
+        <h1 style="text-align: center;">Client Details</h1><br />
         <form action="/client/add" method="POST">
           <div class="form-group">
-            <input type="text" name="CLIENT_NAME" placeholder="Enter Client Name" class="form-control" autofocus>
+            Name :
+            <input type="text" name="CLIENT_NAME" class="form-control" autofocus>
           </div>
           <div class="form-group">
-            <input type="text" name="CITY" placeholder="Enter Client City" class="form-control">
+            City : 
+            <input type="text" name="CITY" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" name="COMPANY" placeholder="Enter Client Company" class="form-control">
+            Company
+            <input type="text" name="COMPANY" class="form-control">
           </div>
-
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" style="margin-left: 45%; width: 125px;">
             save
           </button>
         </form>
       </div>
     </div>
   </div>
+  <hr> <br> <br>
   <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-12">
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
@@ -35,6 +36,7 @@
             <td>CITY</td>
             <td>COMPANY</td>
             <td>ACTIONS</td>
+            <!-- <td>ALL ORDERS</td> -->
           </tr>
         </thead>
         <tbody>
@@ -56,15 +58,16 @@
                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                 </svg>
               </a>
-              <a href="/client/delete/<%= data[i].CLIENT_ID %>" class="btn btn-danger"><svg width="1em" height="1em"
+              <!-- <a href="/client/delete/<%= data[i].CLIENT_ID %>" class="btn btn-danger"><svg width="1em" height="1em"
                   viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                   <path fill-rule="evenodd"
                     d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                 </svg>
-              </a>
+              </a> -->
             </td>
+            <!-- <td><a href="/client/bill/<%= data[i].CLIENT_ID %>">View Orders</a></td> -->
           </tr>
           <% } %>
           <% } %>
@@ -73,5 +76,4 @@
     </div>
   </div>
 </div>
-
 <% include partials/_footer %>

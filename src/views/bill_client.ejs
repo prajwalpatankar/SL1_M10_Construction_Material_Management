@@ -1,0 +1,33 @@
+<% include partials/_header %>
+
+<div class="container">
+    <h5>Client Name : <%= client_det.CLIENT_NAME %></h5>
+    <h5>Phone Number : 
+    <% if (contact_det) { %>
+        <%= contact_det.PHONE_NO %> </h5>
+    <% } else { %>
+        - </h5>
+    <% } %>
+
+    
+    <table border="1px">
+        <tr>
+            <th>ORDER NO.</th>
+            <th>SUPPLIER </th>
+            <th>MATERIAL</th>
+            <th>QUANTITY</th>
+        </tr>
+        <% if (order_det) { %>
+            <% for(var i = 0; i < order_det.length; i++) { %>
+            <tr>
+                <td> <%= order_det.ORDER_NO %> </td>
+                <td> <%= material_det.MATERIAL_NAME %> </td>
+                <td> <%= material_det.MATERIAL_TYPE %> </td>
+                <td> <%= order_det.QUANTITY %> </td>
+            </tr>
+            <% } %>
+        <% } %>
+    </table>
+</div>
+
+<% include partials/_footer %>

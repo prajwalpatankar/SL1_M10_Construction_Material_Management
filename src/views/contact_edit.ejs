@@ -1,28 +1,33 @@
 <% include partials/_header %>
-
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-5 offset-md-3 card">
+        <h4> 
+            Edit Contact details for Client     "<% if (data_client) { %>
+                                                    <% for(var i = 0; i < data_client.length; i++) { %>
+                                                        <%= data_client[i].CLIENT_NAME %> 
+                                                    <% } %>
+                                                <% } %>"   
+        </h4>
+        <div class="col-md-12 card" id="circle">           
             <div class="card-body">
-                <form action="/contact/update/<%= data.CLIENT_ID %>" method="POST">
+                <form action="/contact/update/<%= data.CONTACT_ID %>" method="POST">
+                    <div class="form-group disp-none">
+                        <input type="none" name="CLIENT_ID" value="<%=data.CLIENT_ID %>" class="form-control">
+                    </div> 
                     <div class="form-group">
-                        <input type="text" name="CLIENT_ID" value="<%=data.CLIENT_ID%>" placeholder="Enter Client ID" class="form-control"
-                            autofocus>
+                        Phone No. : 
+                        <input type="text" name="PHONE_NO" value="<%=data.PHONE_NO %>" class="form-control">
                     </div>
                     <div class="form-group">
-                        <input type="text" name="PHONE" value="<%=data.PHONE_NO %>" placeholder="Enter Phone number" class="form-control">
+                        Email : 
+                        <input type="text" name="EMAIL" value="<%=data.EMAIL %>" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <input type="text" name="EMAIL" value="<%=data.EMAIL %>" placeholder="e-mail id" class="form-control">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">
-                        Save
+                    <button type="submit" class="btn btn-primary" style="margin-left: 48%; width: 120px;">
+                        UPDATE
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 <% include partials/_footer %>

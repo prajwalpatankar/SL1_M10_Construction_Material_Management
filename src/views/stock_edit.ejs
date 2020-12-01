@@ -2,18 +2,19 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-md-5 offset-md-3 card">
+    <h4> Edit Stock for <%= data_material.MATERIAL_NAME %> -- <%= data_material.MATERIAL_TYPE %> -- <%= data_material.MATERIAL_GRADE %></h4>
+    <div class="col-md-12 card">
       <div class="card-body">
         <form action="/stock/update/<%= data.MATERIAL_ID %>" method="POST">
+          <div class="form-group disp-none">
+            <input type="none" name="MATERIAL_ID" value="<%=data.MATERIAL_ID %>"  class="form-control" autofocus>
+          </div> 
           <div class="form-group">
-            <input type="text" name="MATERIAL_ID" value="<%=data.MATERIAL_ID %>" placeholder="Enter Material ID" class="form-control" autofocus>
+            Stock :
+            <input type="text" name="STOCK" value="<%=data.STOCK %>" class="form-control">
           </div>
-          <div class="form-group">
-            <input type="text" name="STOCK" value="<%=data.STOCK %>" placeholder="Enter Stock" class="form-control">
-          </div>
-
           <button type="submit" class="btn btn-primary">
-            save
+            UPDATE
           </button>
         </form>
       </div>

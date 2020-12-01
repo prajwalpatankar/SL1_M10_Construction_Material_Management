@@ -2,37 +2,39 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="card-body">
-        <h1>Client Contact Details</h1><br />
-
+        <h1 style="text-align: center;">Client Contact Details</h1><br />
         <form action="/contact/add" method="POST">
           <div class="form-group">
             <label>Client Name </label>
             <select name="CLIENT_ID">
               <% if (data_client) { %>
               <% for(var i = 0; i < data_client.length; i++) { %>
-              <option value=<%= data_client[i].CLIENT_ID %>> <%= data_client[i].CLIENT_NAME %> </option>
+              <option value=<%= data_client[i].CLIENT_ID %>> <%= data_client[i].CLIENT_NAME %>
+              </option>
               <% } %>
               <% } %>
             </select>
           </div>
           <div class="form-group">
-            <input type="text" name="PHONE_NO" placeholder="Enter Phone number" class="form-control">
+            Phone : 
+            <input type="text" name="PHONE_NO" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" name="EMAIL" placeholder="e-mail id" class="form-control">
+            Email : 
+            <input type="text" name="EMAIL" class="form-control">
           </div>
-
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" style="margin-left: 50%;">
             Save
           </button>
         </form>
       </div>
     </div>
   </div>
+  <hr> <br> <br>
   <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-12">
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
@@ -52,7 +54,7 @@
             <td><%= data[i].PHONE_NO %></td>
             <td><%= data[i].EMAIL %></td>
             <td>
-              <a href="/contact/update/<%= data[i].CLIENT_ID %>" class="btn btn-info">
+              <a href="/contact/update/<%= data[i].CONTACT_ID %>" class="btn btn-info">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -61,7 +63,7 @@
                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                 </svg>
               </a>
-              <a href="/contact/delete/<%= data[i].CLIENT_ID %>" class="btn btn-danger"><svg width="1em" height="1em"
+              <a href="/contact/delete/<%= data[i].CLIENT_ID %>&<%= data[i].PHONE_NO %>" class="btn btn-danger"><svg width="1em" height="1em"
                   viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />

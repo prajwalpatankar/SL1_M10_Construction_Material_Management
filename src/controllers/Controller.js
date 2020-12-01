@@ -17,6 +17,24 @@ controller.login = (req, res) => {
   });
 };
 
+controller.loginnew = (req, res) => {
+  const data = req.body;
+  console.log(req.body)
+  req.getConnection((err, connection) => {
+    const query = connection.query('SELECT * FROM LOGIN_DETAILS WHERE USERNAME = ? && PASSWORD = ?',[data.USERNAME, data.PASSWORD], (err, users) => {
+      console.log(users)
+      if(users.length==0) {
+        res.redirect('/signup');
+      }
+      else {
+        res.redirect('/client');
+      }        
+    })
+  })
+};
+
+
+
 // controller.loginsave = (req, res) => {
 //   req.getConnection((err, conn) => {
 //     conn.query('SELECT * FROM LOGIN_DETAILS WHERE USERNAME = ?', (err, users) => {
@@ -44,6 +62,8 @@ controller.signupsave = (req, res) => {
   })
 };
 
+
+// CLIENTS !
 controller.clientlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM CLIENT', (err, clients) => {
@@ -101,8 +121,75 @@ controller.clientdelete = (req, res) => {
 
 
 
+//CONTACTS
+controller.contactlist = (req, res) => {
+  req.getConnection((err, conn) => {
+    conn.query('SELECT * FROM CONTACT_DETAILS', (err, contacts) => {
+      if (err) {
+      res.json(err);
+      }
+      conn.query('SELECT * FROM CLIENT', (err, clients) => {
+        if (err) {
+        res.json(err);
+        }
+        res.render('contact', {
+          data: contacts,
+          data_client: clients
+        });
+      });
+    });
+  });
+};
+
+controller.contactsave = (req, res) => {
+  const data = req.body;
+  console.log(req.body)
+  req.getConnection((err, connection) => {
+    const query = connection.query('INSERT INTO CONTACT_DETAILS SET ?', data, (err, contact) => {
+      console.log(contact)
+      res.redirect('/contact');
+    })
+  })
+};
+
+controller.contactedit = (req, res) => {
+  const { id } = req.params;
+  req.getConnection((err, conn) => {
+    conn.query("SELECT * FROM CONTACT_DETAILS WHERE CONTACT_ID = ?", [id], (err, rows) => {
+      conn.query('SELECT * FROM CLIENT WHERE CLIENT_ID = ?',[id],(err, clients) => {
+        res.render('contact_edit', {
+          data: rows[0],
+          data_client: clients
+        })
+      })
+    });
+  });
+  
+};
+
+controller.contactupdate = (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const newContact = req.body;
+  console.log(req.body)
+  req.getConnection((err, conn) => {
+      conn.query('UPDATE CONTACT_DETAILS SET ? WHERE CONTACT_ID', [newContact, id], (err, rows) => {
+        res.redirect('/contact')
+    });
+  });
+};
+
+controller.contactdelete = (req, res) => {
+  const  id  = req.params;
+  req.getConnection((err, connection) => {
+    connection.query('DELETE FROM CONTACT_DETAILS WHERE CLIENT_ID = ? && PHONE_NO = ?', [id.id,id.ph], (err, rows) => {
+      res.redirect('/contact');
+    });
+  });
+}
 
 
+//MATERIAL !
 controller.materiallist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM MATERIAL', (err, clients) => {
@@ -149,91 +236,20 @@ controller.materialupdate = (req, res) => {
   });
 };
 
-controller.materialdelete = (req, res) => {
-  const { id } = req.params;
-  req.getConnection((err, connection) => {
-    connection.query('DELETE FROM MATERIAL WHERE MATERIAL_ID = ?', [id], (err, rows) => {
-      res.redirect('/material');
-    });
-  });
-}
+// controller.materialdelete = (req, res) => {
+//   const { id } = req.params;
+//   console.log(id)
+//   req.getConnection((err, connection) => {
+//     connection.query('DELETE FROM MATERIAL WHERE MATERIAL_ID = ?', [id], (err, rows) => {
+//       res.redirect('/material');
+//     });
+//   });
+// }
 
 
 
 
-
-
-controller.contactlist = (req, res) => {
-  req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM CONTACT_DETAILS', (err, contacts) => {
-      if (err) {
-      res.json(err);
-      }
-      conn.query('SELECT * FROM CLIENT', (err, clients) => {
-        if (err) {
-        res.json(err);
-        }
-        res.render('contact', {
-          data: contacts,
-          data_client: clients
-        });
-      });
-    });
-  });
-};
-
-controller.contactsave = (req, res) => {
-  const data = req.body;
-  console.log(req.body)
-  req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO CONTACT_DETAILS SET ?', data, (err, contact) => {
-      console.log(contact)
-      res.redirect('/contact');
-    })
-  })
-};
-
-controller.contactedit = (req, res) => {
-  const { id } = req.params;
-  req.getConnection((err, conn) => {
-    conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?", [id], (err, rows) => {
-      res.render('contact_edit', {
-        data: rows[0]
-      })
-    });
-  });
-};
-
-controller.contactupdate = (req, res) => {
-  const { id } = req.params;
-  const newContact = req.body;
-  req.getConnection((err, conn) => {
-
-  conn.query('UPDATE CONTACT_DETAILS SET ? WHERE CLIENT_ID = ?', [newContact, id], (err, rows) => {
-    res.redirect('/contact');
-  });
-  });
-};
-
-controller.contactdelete = (req, res) => {
-  const { id } = req.params;
-  req.getConnection((err, connection) => {
-    connection.query('DELETE FROM CONTACT_DETAILS WHERE CLIENT_ID = ?', [id], (err, rows) => {
-      res.redirect('/contact');
-    });
-  });
-}
-
-
-
-
-
-
-
-
-
-
-
+//STOCKS
 controller.stocklist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM STOCK', (err, stocks) => {
@@ -269,9 +285,16 @@ controller.stockedit = (req, res) => {
   const { id } = req.params;
   req.getConnection((err, conn) => {
     conn.query("SELECT * FROM STOCK WHERE MATERIAL_ID = ?", [id], (err, rows) => {
-      res.render('stock_edit', {
-        data: rows[0]
-      })
+      conn.query('SELECT * FROM MATERIAL',(err, materials) => {
+        if (err) {
+          res.json(err);
+          console.log(err);
+         }
+        res.render('stock_edit', {
+          data: rows[0],
+          data_material: materials[0]
+        })
+      });
     });
   });
 };
@@ -280,10 +303,10 @@ controller.stockupdate = (req, res) => {
   const { id } = req.params;
   const newStock = req.body;
   req.getConnection((err, conn) => {
-
-  conn.query('UPDATE STOCK SET ? WHERE MATERIAL_ID = ?', [newStock, id], (err, rows) => {
-    res.redirect('/stock');
-  });
+    
+      conn.query('UPDATE STOCK SET ? WHERE MATERIAL_ID = ?', [newStock, id], (err, rows) => {
+        res.redirect('/stock')
+    });
   });
 };
 
@@ -295,13 +318,6 @@ controller.stockdelete = (req, res) => {
     });
   });
 }
-
-
-
-
-
-
-
 
 
 
@@ -319,6 +335,7 @@ controller.stockdelete = (req, res) => {
 //   });
 // };
 
+// ORDERS !!
 controller.requirementlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM REQUIREMENT', (err, requirements) => {
@@ -389,6 +406,61 @@ controller.requirementdelete = (req, res) => {
     });
   });
 }
+
+
+
+//BILLS
+
+controller.clientbill = (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  req.getConnection((err, conn) => {
+    conn.query("SELECT * FROM REQUIREMENT WHERE CLIENT_ID = ?", [id], (err, orderdet) => {
+      conn.query("SELECT * FROM CLIENT WHERE CLIENT_ID = ?" , [id], (err, clientdet) => {
+        conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?" , [id], (err, contactdet) => {
+          conn.query("SELECT * FROM MATERIAL WHERE MATERIAL_ID = (SELECT MATERIAL_ID FROM REQUIREMENT WHERE CLIENT_ID = ? )" , [id], (err, materialdet) => {     
+            console.log(orderdet);
+            console.log(clientdet);
+            console.log(contactdet);
+            console.log(materialdet);
+            res.render('bill_client', {
+            order_det: orderdet[0],
+            client_det: clientdet[0],
+            contact_det: contactdet[0],
+            material_det: materialdet[0]
+            });
+          });
+        });            
+      });
+    });
+  });
+};
+
+controller.generateBill = (req, res) => {
+  const  id  = req.params;
+  console.log(id);
+  req.getConnection((err, conn) => {
+    conn.query("SELECT * FROM REQUIREMENT WHERE ORDER_NO = ?", [id.ord], (err, orderdet) => {
+      conn.query("SELECT * FROM CLIENT WHERE CLIENT_ID = ?" , [id.cli], (err, clientdet) => {
+        conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?" , [id.cli], (err, contactdet) => {
+          conn.query("SELECT * FROM MATERIAL WHERE MATERIAL_ID = ?" , [id.mat], (err, materialdet) => {     
+            console.log(orderdet);
+            console.log(clientdet);
+            console.log(contactdet);
+            console.log(materialdet);
+            res.render('bill', {
+            order_det: orderdet[0],
+            client_det: clientdet[0],
+            contact_det: contactdet[0],
+            material_det: materialdet[0]
+            });
+          });
+        });            
+      });
+    });
+  });
+};
+
 
 
 

@@ -2,21 +2,26 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-md-5 offset-md-3 card">
+    <h4> 
+      Edit details of client "<%= data.CLIENT_NAME %>" 
+    </h4>
+    <div class="col-md-12 card" id="circle"> 
       <div class="card-body">
         <form action="/client/update/<%= data.CLIENT_ID %>" method="POST">
           <div class="form-group">
-            <input type="text" name="CLIENT_NAME" value="<%= data.CLIENT_NAME%>" placeholder="Name" class="form-control" autofocus>
+            Name : 
+            <input type="text" name="CLIENT_NAME" value="<%= data.CLIENT_NAME%>" class="form-control"  autofocus>
           </div>
           <div class="form-group">
-            <input type="text" name="CITY" value="<%= data.CITY%>" placeholder="Address" class="form-control">
+            City : 
+            <input type="text" name="CITY" value="<%= data.CITY%>" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" name="COMPANY" value="<%= data.COMPANY%>" placeholder="Phone" class="form-control">
+            Company : 
+            <input type="text" name="COMPANY" value="<%= data.COMPANY%>" class="form-control">
           </div>
-
           <button type="submit" class="btn btn-primary">
-            save 
+            save
           </button>
         </form>
       </div>
