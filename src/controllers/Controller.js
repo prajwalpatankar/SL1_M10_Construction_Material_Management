@@ -1,18 +1,26 @@
 const controller = {};
 
 controller.home = (req, res) => {
-  res.render('home')
+  req.getConnection((err, conn) => {
+    conn.query('UPDATE LOGIN_DETAILS SET ISACTIVE = "N" WHERE ISACTIVE="Y"', (err) => {
+      if (err) {
+        res.json(err);
+      }
+      res.render('home', {
+      });
+    });
+  });
 }
 
 controller.login = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM LOGIN_DETAILS', (err, users) => {
-     if (err) {
-      res.json(err);
-     }
-     res.render('login', {
+      if (err) {
+        res.json(err);
+      }
+      res.render('login', {
         data: users
-     });
+      });
     });
   });
 };
@@ -20,12 +28,12 @@ controller.login = (req, res) => {
 controller.loginerr = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM LOGIN_DETAILS', (err, users) => {
-     if (err) {
-      res.json(err);
-     }
-     res.render('loginerr', {
+      if (err) {
+        res.json(err);
+      }
+      res.render('loginerr', {
         data: users
-     });
+      });
     });
   });
 };
@@ -34,14 +42,16 @@ controller.loginnew = (req, res) => {
   const data = req.body;
   console.log(req.body)
   req.getConnection((err, connection) => {
-    const query = connection.query('SELECT * FROM LOGIN_DETAILS WHERE USERNAME = ? && PASSWORD = ?',[data.USERNAME, data.PASSWORD], (err, users) => {
-      console.log(users)
-      if(users.length==0) {
-        res.redirect('/signuperr');
-      }
-      else {
-        res.redirect('/client');
-      }        
+    const query = connection.query('SELECT * FROM LOGIN_DETAILS WHERE USERNAME = ? && PASSWORD = ?', [data.USERNAME, data.PASSWORD], (err, users) => {
+      const query = connection.query('UPDATE LOGIN_DETAILS SET ISACTIVE="Y" WHERE USERNAME = ? && PASSWORD = ?', [data.USERNAME, data.PASSWORD], (err) => {
+        console.log(users)
+        if (users.length == 0) {
+          res.redirect('/signuperr');
+        }
+        else {
+          res.redirect('/client');
+        }
+      });
     })
   })
 };
@@ -83,12 +93,22 @@ controller.signupsave = (req, res) => {
 controller.clientlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM CLIENT', (err, clients) => {
-     if (err) {
-      res.json(err);
-     }
-     res.render('clients', {
-        data: clients
-     });
+      if (err) {
+        res.json(err);
+      }
+      conn.query('SELECT * FROM LOGIN_DETAILS WHERE ISACTIVE="Y"', (err, users) => {
+        if (err) {
+          res.json(err);
+        }
+        if (users.length == 0) {
+          res.redirect('/loginerr');
+        }
+        else {
+          res.render('clients', {
+            data: clients
+          });
+        }
+      });
     });
   });
 };
@@ -120,9 +140,9 @@ controller.clientupdate = (req, res) => {
   const newClient = req.body;
   req.getConnection((err, conn) => {
 
-  conn.query('UPDATE CLIENT SET ? WHERE CLIENT_ID = ?', [newClient, id], (err, rows) => {
-    res.redirect('/client');
-  });
+    conn.query('UPDATE CLIENT SET ? WHERE CLIENT_ID = ?', [newClient, id], (err, rows) => {
+      res.redirect('/client');
+    });
   });
 };
 
@@ -142,15 +162,25 @@ controller.contactlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM CONTACT_DETAILS', (err, contacts) => {
       if (err) {
-      res.json(err);
+        res.json(err);
       }
       conn.query('SELECT * FROM CLIENT', (err, clients) => {
         if (err) {
-        res.json(err);
+          res.json(err);
         }
-        res.render('contact', {
-          data: contacts,
-          data_client: clients
+        conn.query('SELECT * FROM LOGIN_DETAILS WHERE ISACTIVE="Y"', (err, users) => {
+          if (err) {
+            res.json(err);
+          }
+          if (users.length == 0) {
+            res.redirect('/loginerr');
+          }
+          else {
+            res.render('contact', {
+              data: contacts,
+              data_client: clients
+            });
+          }
         });
       });
     });
@@ -172,7 +202,7 @@ controller.contactedit = (req, res) => {
   const { id } = req.params;
   req.getConnection((err, conn) => {
     conn.query("SELECT * FROM CONTACT_DETAILS WHERE CONTACT_ID = ?", [id], (err, rows) => {
-      conn.query('SELECT * FROM CLIENT WHERE CLIENT_ID = ?',[id],(err, clients) => {
+      conn.query('SELECT * FROM CLIENT WHERE CLIENT_ID = ?', [id], (err, clients) => {
         res.render('contact_edit', {
           data: rows[0],
           data_client: clients
@@ -180,7 +210,7 @@ controller.contactedit = (req, res) => {
       })
     });
   });
-  
+
 };
 
 controller.contactupdate = (req, res) => {
@@ -189,16 +219,16 @@ controller.contactupdate = (req, res) => {
   const newContact = req.body;
   console.log(req.body)
   req.getConnection((err, conn) => {
-      conn.query('UPDATE CONTACT_DETAILS SET ? WHERE CONTACT_ID', [newContact, id], (err, rows) => {
-        res.redirect('/contact')
+    conn.query('UPDATE CONTACT_DETAILS SET ? WHERE CONTACT_ID', [newContact, id], (err, rows) => {
+      res.redirect('/contact')
     });
   });
 };
 
 controller.contactdelete = (req, res) => {
-  const  id  = req.params;
+  const id = req.params;
   req.getConnection((err, connection) => {
-    connection.query('DELETE FROM CONTACT_DETAILS WHERE CLIENT_ID = ? && PHONE_NO = ?', [id.id,id.ph], (err, rows) => {
+    connection.query('DELETE FROM CONTACT_DETAILS WHERE CLIENT_ID = ? && PHONE_NO = ?', [id.id, id.ph], (err, rows) => {
       res.redirect('/contact');
     });
   });
@@ -209,12 +239,22 @@ controller.contactdelete = (req, res) => {
 controller.materiallist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM MATERIAL', (err, clients) => {
-     if (err) {
-      res.json(err);
-     }
-     res.render('material', {
-        data: clients
-     });
+      if (err) {
+        res.json(err);
+      }
+      conn.query('SELECT * FROM LOGIN_DETAILS WHERE ISACTIVE="Y"', (err, users) => {
+        if (err) {
+          res.json(err);
+        }
+        if (users.length == 0) {
+          res.redirect('/loginerr');
+        }
+        else {
+          res.render('material', {
+            data: clients
+          });
+        }
+      });
     });
   });
 };
@@ -246,9 +286,9 @@ controller.materialupdate = (req, res) => {
   const newMaterial = req.body;
   req.getConnection((err, conn) => {
 
-  conn.query('UPDATE MATERIAL SET ? WHERE MATERIAL_ID = ?', [newMaterial, id], (err, rows) => {
-    res.redirect('/material');
-  });
+    conn.query('UPDATE MATERIAL SET ? WHERE MATERIAL_ID = ?', [newMaterial, id], (err, rows) => {
+      res.redirect('/material');
+    });
   });
 };
 
@@ -269,17 +309,28 @@ controller.materialupdate = (req, res) => {
 controller.stocklist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM STOCK', (err, stocks) => {
-     if (err) {
-      res.json(err);
-     }
-     conn.query('SELECT * FROM MATERIAL',(err, materials) => {
       if (err) {
         res.json(err);
-        console.log(err);
-       }
-        res.render('stock', {
-            data: stocks,
-            data_material: materials
+      }
+      conn.query('SELECT * FROM MATERIAL', (err, materials) => {
+        if (err) {
+          res.json(err);
+          console.log(err);
+        }
+
+        conn.query('SELECT * FROM LOGIN_DETAILS WHERE ISACTIVE="Y"', (err, users) => {
+          if (err) {
+            res.json(err);
+          }
+          if (users.length == 0) {
+            res.redirect('/loginerr');
+          }
+          else {
+            res.render('stock', {
+              data: stocks,
+              data_material: materials
+            });
+          }
         });
       });
     });
@@ -301,11 +352,11 @@ controller.stockedit = (req, res) => {
   const { id } = req.params;
   req.getConnection((err, conn) => {
     conn.query("SELECT * FROM STOCK WHERE MATERIAL_ID = ?", [id], (err, rows) => {
-      conn.query('SELECT * FROM MATERIAL',(err, materials) => {
+      conn.query('SELECT * FROM MATERIAL', (err, materials) => {
         if (err) {
           res.json(err);
           console.log(err);
-         }
+        }
         res.render('stock_edit', {
           data: rows[0],
           data_material: materials[0]
@@ -319,9 +370,9 @@ controller.stockupdate = (req, res) => {
   const { id } = req.params;
   const newStock = req.body;
   req.getConnection((err, conn) => {
-    
-      conn.query('UPDATE STOCK SET ? WHERE MATERIAL_ID = ?', [newStock, id], (err, rows) => {
-        res.redirect('/stock')
+
+    conn.query('UPDATE STOCK SET ? WHERE MATERIAL_ID = ?', [newStock, id], (err, rows) => {
+      res.redirect('/stock')
     });
   });
 };
@@ -355,27 +406,38 @@ controller.stockdelete = (req, res) => {
 controller.requirementlist = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM REQUIREMENT', (err, requirements) => {
-     if (err) {
-      res.json(err);
-      console.log(err);
-     }
-     conn.query('SELECT * FROM CLIENT',(err, clients) => {
       if (err) {
         res.json(err);
         console.log(err);
-       }
-       conn.query('SELECT * FROM MATERIAL',(err, materials) => {
+      }
+      conn.query('SELECT * FROM CLIENT', (err, clients) => {
         if (err) {
           res.json(err);
           console.log(err);
-         }
-         res.render('requirement', {
-          data: requirements,
-          data_client: clients,
-          data_material: materials 
-       });
-       });
-     });
+        }
+        conn.query('SELECT * FROM MATERIAL', (err, materials) => {
+          if (err) {
+            res.json(err);
+            console.log(err);
+          }
+
+          conn.query('SELECT * FROM LOGIN_DETAILS WHERE ISACTIVE="Y"', (err, users) => {
+            if (err) {
+              res.json(err);
+            }
+            if (users.length == 0) {
+              res.redirect('/loginerr');
+            }
+            else {
+              res.render('requirement', {
+                data: requirements,
+                data_client: clients,
+                data_material: materials
+              });
+            }
+          });
+        });
+      });
     });
   });
 };
@@ -432,46 +494,46 @@ controller.clientbill = (req, res) => {
   console.log(id);
   req.getConnection((err, conn) => {
     conn.query("SELECT * FROM REQUIREMENT WHERE CLIENT_ID = ?", [id], (err, orderdet) => {
-      conn.query("SELECT * FROM CLIENT WHERE CLIENT_ID = ?" , [id], (err, clientdet) => {
-        conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?" , [id], (err, contactdet) => {
-          conn.query("SELECT * FROM MATERIAL WHERE MATERIAL_ID = (SELECT MATERIAL_ID FROM REQUIREMENT WHERE CLIENT_ID = ? )" , [id], (err, materialdet) => {     
+      conn.query("SELECT * FROM CLIENT WHERE CLIENT_ID = ?", [id], (err, clientdet) => {
+        conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?", [id], (err, contactdet) => {
+          conn.query("SELECT * FROM MATERIAL WHERE MATERIAL_ID = (SELECT MATERIAL_ID FROM REQUIREMENT WHERE CLIENT_ID = ? )", [id], (err, materialdet) => {
             console.log(orderdet);
             console.log(clientdet);
             console.log(contactdet);
             console.log(materialdet);
             res.render('bill_client', {
-            order_det: orderdet[0],
-            client_det: clientdet[0],
-            contact_det: contactdet[0],
-            material_det: materialdet[0]
+              order_det: orderdet[0],
+              client_det: clientdet[0],
+              contact_det: contactdet[0],
+              material_det: materialdet[0]
             });
           });
-        });            
+        });
       });
     });
   });
 };
 
 controller.generateBill = (req, res) => {
-  const  id  = req.params;
+  const id = req.params;
   console.log(id);
   req.getConnection((err, conn) => {
     conn.query("SELECT * FROM REQUIREMENT WHERE ORDER_NO = ?", [id.ord], (err, orderdet) => {
-      conn.query("SELECT * FROM CLIENT WHERE CLIENT_ID = ?" , [id.cli], (err, clientdet) => {
-        conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?" , [id.cli], (err, contactdet) => {
-          conn.query("SELECT * FROM MATERIAL WHERE MATERIAL_ID = ?" , [id.mat], (err, materialdet) => {     
+      conn.query("SELECT * FROM CLIENT WHERE CLIENT_ID = ?", [id.cli], (err, clientdet) => {
+        conn.query("SELECT * FROM CONTACT_DETAILS WHERE CLIENT_ID = ?", [id.cli], (err, contactdet) => {
+          conn.query("SELECT * FROM MATERIAL WHERE MATERIAL_ID = ?", [id.mat], (err, materialdet) => {
             console.log(orderdet);
             console.log(clientdet);
             console.log(contactdet);
             console.log(materialdet);
             res.render('bill', {
-            order_det: orderdet[0],
-            client_det: clientdet[0],
-            contact_det: contactdet[0],
-            material_det: materialdet[0]
+              order_det: orderdet[0],
+              client_det: clientdet[0],
+              contact_det: contactdet[0],
+              material_det: materialdet[0]
             });
           });
-        });            
+        });
       });
     });
   });
