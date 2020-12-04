@@ -17,6 +17,19 @@ controller.login = (req, res) => {
   });
 };
 
+controller.loginerr = (req, res) => {
+  req.getConnection((err, conn) => {
+    conn.query('SELECT * FROM LOGIN_DETAILS', (err, users) => {
+     if (err) {
+      res.json(err);
+     }
+     res.render('loginerr', {
+        data: users
+     });
+    });
+  });
+};
+
 controller.loginnew = (req, res) => {
   const data = req.body;
   console.log(req.body)
@@ -24,7 +37,7 @@ controller.loginnew = (req, res) => {
     const query = connection.query('SELECT * FROM LOGIN_DETAILS WHERE USERNAME = ? && PASSWORD = ?',[data.USERNAME, data.PASSWORD], (err, users) => {
       console.log(users)
       if(users.length==0) {
-        res.redirect('/signup');
+        res.redirect('/signuperr');
       }
       else {
         res.redirect('/client');
@@ -49,6 +62,9 @@ controller.loginnew = (req, res) => {
 
 controller.signup = (req, res) => {
   res.render('signup')
+}
+controller.signuperr = (req, res) => {
+  res.render('signuperr')
 }
 
 controller.signupsave = (req, res) => {

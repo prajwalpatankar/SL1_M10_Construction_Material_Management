@@ -8,7 +8,9 @@ router.get('/',Controller.home);
 
 router.get('/login',Controller.login);
 router.post('/login/in',Controller.loginnew);
+router.get('/loginerr',Controller.loginerr);
 router.get('/signup',Controller.signup);
+router.get('/signuperr',Controller.signuperr);
 router.post('/signup/add',Controller.signupsave);
 
 router.get('/client', Controller.clientlist);

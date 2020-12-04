@@ -1,0 +1,24 @@
+<% include partials/_headerhome %>
+
+<div class="container">
+
+
+    <form action="/login/in" method="POST" style="width: 50%;margin: 0 auto;" >
+        <h4 style="text-align: center; background-color:#f2dede ; color: #bb6a68; padding-left: -200px; border: 1px solid #bb6a68; border-radius: 5px; padding: 5px 10px;">PLEASE LOGIN FIRST !!</h4><br><br>    
+        <h1 style="text-align: center;">Log in</h1><br />
+        <div class="form-group">
+            Username : 
+            <input type="text" name="USERNAME" class="form-control">
+        </div>
+        <div class="form-group">
+            Password :
+            <input type="password" name="PASSWORD" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left: 48%;">
+            Login
+        </button><br><br><br>
+        <h6 style="text-align: center;"><a href="/signup" >Don't have an Account? Sign Up!</a></h6>
+    </form>
+</div>
+
+<% include partials/_footer %>
