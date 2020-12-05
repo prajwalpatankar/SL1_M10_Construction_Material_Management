@@ -1,4 +1,3 @@
-const { check, validationResult } = require('express-validator');
 const controller = {};
 
 controller.home = (req, res) => {
@@ -278,14 +277,28 @@ controller.materiallist = (req, res) => {
 
 controller.materialsave = (req, res) => {
   const data = req.body;
-  console.log(req.body)
+  console.log(req.body);
   req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO MATERIAL SET ?', data, (err, client) => {
-      console.log(client)
-      res.redirect('/material');
-    })
-  })
+
+    const query = connection.query('SELECT * FROM MATERIAL WHERE MATERIAL_NAME = ? &&  MATERIAL_TYPE = ? &&  MATERIAL_GRADE = ?', [data.MATERIAL_NAME, data.MATERIAL_TYPE, data.MATERIAL_GRADE], (err, matval) => {
+
+      if (matval.length == 0) {
+        const query = connection.query('INSERT INTO MATERIAL SET ?', data, (err, client) => {
+          console.log(client)
+          res.redirect('/material');
+        })
+      }
+      else {
+        res.redirect('/error_material');
+      }
+    });
+  });
 };
+
+controller.errorMaterial = (req, res) => {
+  res.render('error_material');
+}
+
 
 controller.materialedit = (req, res) => {
   const { id } = req.params;
@@ -477,12 +490,18 @@ controller.requirementlist = (req, res) => {
 controller.requirementsave = (req, res) => {
   const data = req.body;
   console.log(req.body)
-  req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO TEMP_REQ SET ?', data, (err, requirement) => {
-      console.log(requirement)
-      res.redirect('/requirement');
+  if (data.QUANTITY > 0) {
+    req.getConnection((err, connection) => {
+      const query = connection.query('INSERT INTO TEMP_REQ SET ?', data, (err, requirement) => {
+        console.log(requirement)
+        res.redirect('/requirement');
+      })
     })
-  })
+  }
+  else {
+    res.render('error_quantity');
+  }
+
 };
 
 // controller.requirementedit = (req, res) => {

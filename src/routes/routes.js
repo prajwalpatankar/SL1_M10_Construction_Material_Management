@@ -22,6 +22,7 @@ router.get('/client/bill/:id', Controller.clientbill);
 
 router.get('/material', Controller.materiallist);
 router.post('/material/add',Controller.materialsave);
+router.get('/error_material', Controller.errorMaterial);
 router.get('/material/update/:id', Controller.materialedit);
 router.post('/material/update/:id', Controller.materialupdate);
 // router.get('/material/delete/:id', Controller.materialdelete);
