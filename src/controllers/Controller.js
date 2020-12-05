@@ -1,3 +1,4 @@
+const { check, validationResult } = require('express-validator');
 const controller = {};
 
 controller.home = (req, res) => {
@@ -115,7 +116,7 @@ controller.clientlist = (req, res) => {
 
 controller.clientsave = (req, res) => {
   const data = req.body;
-  console.log(req.body)
+  console.log(req.body);
   req.getConnection((err, connection) => {
     const query = connection.query('INSERT INTO CLIENT SET ?', data, (err, client) => {
       console.log(client)
@@ -189,14 +190,30 @@ controller.contactlist = (req, res) => {
 
 controller.contactsave = (req, res) => {
   const data = req.body;
-  console.log(req.body)
-  req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO CONTACT_DETAILS SET ?', data, (err, contact) => {
-      console.log(contact)
-      res.redirect('/contact');
+  console.log(req.body);
+  var phoneno = /^\d{10}$/;
+  var emailvalid = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if (data.PHONE_NO.length == 10 && data.PHONE_NO.match(phoneno) && data.EMAIL.match(emailvalid)) {
+    req.getConnection((err, connection) => {
+      const query = connection.query('INSERT INTO CONTACT_DETAILS SET ?', data, (err, contact) => {
+        console.log(contact)
+        res.redirect('/contact');
+      })
     })
-  })
+  }
+  else {
+    res.redirect('/error_contact');  // ------------------------CHANGE THIS !!!!!!!!!
+  }
+
 };
+
+
+controller.errorContact = (req, res) => {
+  res.render('error_contact');
+}
+
+
+
 
 controller.contactedit = (req, res) => {
   const { id } = req.params;
@@ -339,14 +356,28 @@ controller.stocklist = (req, res) => {
 
 controller.stocksave = (req, res) => {
   const data = req.body;
-  console.log(req.body)
-  req.getConnection((err, connection) => {
-    const query = connection.query('INSERT INTO STOCK SET ?', data, (err, stock) => {
-      console.log(stock)
-      res.redirect('/stock');
+  console.log(req.body);
+  if (data.STOCK > 0) {
+    req.getConnection((err, connection) => {
+      const query = connection.query('INSERT INTO STOCK SET ?', data, (err, stock) => {
+        console.log(stock)
+        res.redirect('/stock');
+      })
     })
-  })
+  }
+  else {
+    res.redirect('/error_stock');  // ------------------------CHANGE THIS !!!!!!!!!
+  }
+
 };
+
+
+
+controller.errorStock = (req, res) => {
+  res.render('error_stock');
+}
+
+
 
 controller.stockedit = (req, res) => {
   const { id } = req.params;

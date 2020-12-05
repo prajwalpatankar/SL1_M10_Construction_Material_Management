@@ -26,7 +26,8 @@ router.get('/material/update/:id', Controller.materialedit);
 router.post('/material/update/:id', Controller.materialupdate);
 // router.get('/material/delete/:id', Controller.materialdelete);
 
-router.get('/contact', Controller.contactlist,Controller.clientlist);
+router.get('/contact', Controller.contactlist);
+router.get('/error_contact', Controller.errorContact);
 router.post('/contact/add',Controller.contactsave);
 router.get('/contact/update/:id', Controller.contactedit);
 router.post('/contact/update/:id', Controller.contactupdate);
@@ -34,6 +35,7 @@ router.get('/contact/delete/:id&:ph', Controller.contactdelete);
 
 router.get('/stock', Controller.stocklist);
 router.post('/stock/add',Controller.stocksave);
+router.get('/error_stock', Controller.errorStock);
 router.get('/stock/update/:id', Controller.stockedit);
 router.post('/stock/update/:id', Controller.stockupdate);
 router.get('/stock/delete/:id', Controller.stockdelete);
