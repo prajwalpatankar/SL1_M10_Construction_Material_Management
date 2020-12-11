@@ -1,6 +1,6 @@
 # setting up
 
-      $ cd sl1-mini-project-master
+      $ cd SL1_M10_Construction_Material_Management-master
       $ npm install
 
 # For initialising on windows
