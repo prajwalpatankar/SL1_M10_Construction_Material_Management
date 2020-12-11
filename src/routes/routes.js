@@ -6,6 +6,10 @@ const Controller = require('../controllers/Controller');
 
 router.get('/',Controller.home);
 
+
+router.get('/employee',Controller.employee);
+router.post('/employee/add',Controller.addemployee);
+
 router.get('/login',Controller.login);
 router.post('/login/in',Controller.loginnew);
 router.get('/loginerr',Controller.loginerr);

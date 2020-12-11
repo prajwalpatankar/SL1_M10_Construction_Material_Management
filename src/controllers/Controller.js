@@ -1,4 +1,31 @@
+const { compile } = require("morgan");
+
 const controller = {};
+
+
+
+controller.employee = (req,res) => {
+  res.render('employee');
+}
+
+controller.addemployee = (req,res) => {
+  const data = req.body;
+  console.log(data);
+  req.getConnection((err, conn) => {
+    const query =conn.query('INSERT INTO EMPLOYEE SET ?', data ,(err,emp)=> {
+      if(err) {
+        console.log(err);
+      }
+      console.log(emp);
+      res.render('employee');
+    });
+  });
+}
+
+
+
+
+
 
 controller.home = (req, res) => {
   req.getConnection((err, conn) => {
