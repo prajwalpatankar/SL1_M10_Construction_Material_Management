@@ -4,7 +4,7 @@
       $ npm install
 
 # For initialising on windows
-\sql
+\sql  
 Mysql SQL>  \connect root@localhost
 
 # storing the database on Windows
