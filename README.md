@@ -4,8 +4,9 @@
       $ npm install
 
 # For initialising on windows
-\sql  
-Mysql SQL>  \connect root@localhost
+      Open MySQL Shell
+      \sql  
+      Mysql SQL>  \connect root@localhost
 
 # storing the database on Windows
       Copy the "construction_material_management.sql" file into C:\Windows\System32\
