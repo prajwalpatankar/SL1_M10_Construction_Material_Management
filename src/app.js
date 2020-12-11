@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 app.use(myConnection(mysql, {
   host: 'localhost',
   user: 'root',
-  password: 'uknowme',
+  password: 'enter password here',
   // port: 3306,
   database: 'construction_material_management',
   multipleStatements: true
